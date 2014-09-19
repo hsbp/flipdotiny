@@ -1,8 +1,6 @@
 #!/usr/bin/python
 
 from serial import Serial
-from time import sleep
-import struct
 
 COLS = 20
 ROWS = 16
