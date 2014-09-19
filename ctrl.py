@@ -32,4 +32,4 @@ class FlipDots(object):
 
 if __name__ == '__main__':
     fd = FlipDots()
-    fd.cleckboard()
+    fd.checkboard()
