@@ -12,7 +12,8 @@ class TestRemote(unittest.TestCase):
     def test_init(self):
         self.assertEqual(
                 self.get_serial_buf().getvalue(),
-                ''.join((chr(0x20 | col) + '\xFF\xFF') for col in xrange(remote.COLS)))
+                ''.join((chr(0x20 | col) + '\xFF\xFF') for col
+                    in reversed(xrange(remote.COLS))))
         for pixel in remote.PIXELS:
 			self.assertTrue(self.remote.get_pixel(pixel))
 
@@ -21,18 +22,18 @@ class TestRemote(unittest.TestCase):
         sb.truncate(0)
         self.remote.set_pixel((0, 0), False)
         self.remote.flush_pixels()
-        self.assertEqual(sb.getvalue(), '\x10\xff\xff\xfe')
+        self.assertEqual(sb.getvalue(), '\x1f\xff\xff\xfe')
 
     def test_second_block(self):
         sb = self.get_serial_buf()
         sb.truncate(0)
         self.remote.set_pixel((0, 1), False)
         self.remote.flush_pixels()
-        self.assertEqual(sb.getvalue(), '\x11\xff\xff\xfe')
+        self.assertEqual(sb.getvalue(), '\x1e\xff\xff\xfe')
         sb.truncate(0)
         self.remote.set_pixel((1, 0), False)
         self.remote.flush_pixels()
-        self.assertEqual(sb.getvalue(), '\x10\xff\xff\xfd')
+        self.assertEqual(sb.getvalue(), '\x1f\xff\xff\xfd')
 
     def test_empty_flush(self):
         sb = self.get_serial_buf()
@@ -50,7 +51,8 @@ class TestRemote(unittest.TestCase):
         self.remote.flush_pixels()
         self.assertEqual(
                 sb.getvalue(),
-                ''.join((chr(0x10 | row) + '\xf0\0\0') for row in xrange(remote.ROWS)))
+                ''.join((chr(0x10 | row) + '\xf0\0\0') for row
+                    in reversed(xrange(remote.ROWS))))
 
     def get_serial_buf(self):
         return self.remote.port.dut2tc

@@ -38,9 +38,9 @@ class Remote(object):
                 continue
             for num, line in lines.items():
                 if color == self.BLACK:
-                    self.port.write(chr(0x20 | num) + struct.pack('>H', line))
+                    self.port.write(chr(0x20 | (COLS - num - 1)) + struct.pack('>H', line))
                 elif color == self.WHITE:
-                    self.port.write(chr(0x10 | num) + struct.pack('>I', line ^ 0xFFFFFF)[1:])
+                    self.port.write(chr(0x10 | (ROWS - num - 1)) + struct.pack('>I', line ^ 0xFFFFFF)[1:])
                 else:
                     raise ValueError('Invalid color {0}'.format(color))
                 while not self.port.read():
