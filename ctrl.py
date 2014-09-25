@@ -17,7 +17,6 @@ class FlipDots(object):
 
     def clear_white(self):
         for row in xrange(ROWS):
-            print 'r', row
             self.port.write(chr(0x10 | row) + '\x00' * 3)
             while not self.port.read():
                 pass
@@ -25,7 +24,6 @@ class FlipDots(object):
     def checkboard(self):
         self.clear_black()
         for row in xrange(ROWS):
-            print 'ch', row
             self.port.write(chr(0x10 | row) + (chr(0x55) if row % 2 else chr(0xAA)) * 3)
             while not self.port.read():
                 pass
